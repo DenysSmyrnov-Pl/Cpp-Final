@@ -4,8 +4,8 @@
 #include <vector> // I chose vector instead of list due to its flexibility and if we can't predict the amount of Pearson in Input file
 
 using namespace std;
-
-class Person // Сlass that include FirstName, SecondName, Score
+// Сlass that include FirstName, SecondName, Score
+class Person
 {
 public:
     string FirstName;
@@ -20,8 +20,9 @@ public:
 // Function to output all objects
 void CoutAllPersons(vector<Person> persons)
 {
+    size_t i = 0;
     cout << "List of people:" << endl;
-    for (int i = 0; i < persons.size(); i++)
+    for (i = 0; i < persons.size(); i++)
     {
         cout << i + 1 << ") ";
         cout << persons[i].FirstName << " ";
@@ -33,14 +34,16 @@ void CoutAllPersons(vector<Person> persons)
 // Function to add a new object
 void addPerson(vector<Person> &persons)
 {
-    std::string firstName, secondName;
+    string firstName, secondName;
     int score;
 
-    cout << "Enter First Name: ";
+    cout << "Enter new First Name: ";
     cin >> firstName;
-    cout << "Enter Second Name: ";
+
+    cout << "Enter new Second Name: ";
     cin >> secondName;
-    cout << "Enter Score: ";
+
+    cout << "Enter new Score: ";
     cin >> score;
 
     persons.emplace_back(firstName, secondName, score);
@@ -49,32 +52,32 @@ void addPerson(vector<Person> &persons)
 // Function for changing the object
 void changePerson(vector<Person> &persons)
 {
-    int index;
+    size_t i = 0;
     cout << "Enter the number of the person you want to modify: ";
-    cin >> index;
+    cin >> i;
 
-    if (index < 1 || index > persons.size())
+    if (i < 1 || i > persons.size())
     {
         cout << "Invalid person number!" << endl;
         return;
     }
 
-    index--; // Decrease by 1, since the user enters from 1, and indexing starts from 0
+    i--; // Decrease by 1, the user enters from 1, but vector start from 0
 
     cout << "Enter new First Name: ";
-    cin >> persons[index].FirstName;
+    cin >> persons[i].FirstName;
 
     cout << "Enter new Second Name: ";
-    cin >> persons[index].SecondName;
+    cin >> persons[i].SecondName;
 
     cout << "Enter new Score: ";
-    cin >> persons[index].Score;
+    cin >> persons[i].Score;
 }
 
 // Function to delete an object
-void removePerson(vector<Person> persons)
+void removePerson(vector<Person> &persons)
 {
-    int i;
+    size_t i;
     cout << "Enter the number of the person you want to delete: ";
     cin >> i;
 
@@ -103,7 +106,6 @@ int main()
         if (!file.is_open()) // Checking if the fileName is Empty
         {
             cout << "Error opening file!" << endl;
-            return 1;
         }
 
         string line;
@@ -123,6 +125,7 @@ int main()
                 if (line == "")
                 {
                     cout << "Empty line! => " << lineIndex << endl;
+                    continue;
                 }
 
                 cout << "Error: Incorrect data! => " << lineIndex << endl;
@@ -130,46 +133,54 @@ int main()
             }
             persons.emplace_back(firstName, secondName, score);
         }
+
         file.close();
     }
     catch (exception error)
     {
-        cout << "Error: " << error.what() << endl;
+        cout << error.what() << endl;
     }
 
     CoutAllPersons(persons); // Output of all created objects
-
-    try // Changing, adding, deleting objects at the user request
+    while (true)
     {
-        char choice;
-        cout << "Do you want to change (c), add (a) or remove (r) a person? (Enter (n) if no): ";
-        cin >> choice;
+        try // Changing, adding, deleting objects at the user request
+        {
+            char choice;
+            cout << "Do you want to change (c), add (a) or remove (r) a person? (Enter (n) if no): ";
+            cin >> choice;
 
-        if (choice == 'c')
-        {
-            changePerson(persons);
+            if (choice == 'c')
+            {
+                changePerson(persons);
+                break;
+            }
+            else if (choice == 'a')
+            {
+                addPerson(persons);
+                break;
+            }
+            else if (choice == 'r')
+            {
+                removePerson(persons);
+                break;
+            }
+            else if (choice == 'n')
+            {
+                break;
+            }
+            else
+            {
+                cout << "No command found, try again! " << endl;
+            }
         }
-        else if (choice == 'a')
+        catch (exception error)
         {
-            addPerson(persons);
+            cout << error.what() << endl;
         }
-        else if (choice == 'r')
-        {
-            removePerson(persons);
-        }
-        else if (choice == 'n')
-        {
-        }
-        else
-        {
-            cout << "No command found!" << endl;
-        }
-        CoutAllPersons(persons); // Output the new list
     }
-    catch (exception error)
-    {
-        cout << "Error: " << error.what() << endl;
-    }
+
+    CoutAllPersons(persons); // Output the new list
     // Write to output file
     try
     {
@@ -191,6 +202,6 @@ int main()
     }
     catch (exception error)
     {
-        cout << "Error: " << error.what() << endl;
+        cout << error.what() << endl;
     }
 }
