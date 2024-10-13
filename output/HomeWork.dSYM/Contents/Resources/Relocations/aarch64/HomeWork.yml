@@ -1,0 +1,5 @@
+---
+triple:          'arm64-apple-darwin'
+binary-path:     '/Users/denys/Documents/Cpp Final/output/HomeWork'
+relocations:     []
+...

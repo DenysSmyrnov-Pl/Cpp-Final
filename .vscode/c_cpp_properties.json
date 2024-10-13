@@ -1,0 +1,30 @@
+{
+    "version": 4,
+    "configurations": [
+        {
+            "name": "Mac",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "*/usr/include/c++/v1",
+                "*/Library/Developer/CommandLineTools/usr/include/c++/v1",
+                "*/usr/local/include",
+                "*/usr/include"
+            ],
+            "defines": [],
+            "intelliSenseMode": "macos-clang-x64",
+            "compilerPath": "/usr/bin/clang++",
+            "cStandard": "c11",
+            "cppStandard": "c++17",
+            "browse": {
+                "path": [
+                    "${workspaceFolder}",
+                    "*/usr/include/c++/v1",
+                    "*/Library/Developer/CommandLineTools/usr/include/c++/v1",
+                    "*/usr/local/include",
+                    "*/usr/include"
+                ],
+                "limitSymbolsToIncludedHeaders": true
+            }
+        }
+    ]
+}
