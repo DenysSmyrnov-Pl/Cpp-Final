@@ -45,8 +45,9 @@ void addPerson(vector<Person> &persons)
 
     cout << "Enter new Score: ";
     cin >> score;
-
-    persons.emplace_back(firstName, secondName, score);
+    persons.push_back(Person(firstName, secondName, score));
+    // OR
+    // persons.emplace_back(firstName, secondName, score);
 }
 
 // Function for changing the object
@@ -84,6 +85,7 @@ void removePerson(vector<Person> &persons)
     if (i < 1 || i > persons.size()) // check if User wrote correct index line
     {
         cout << "Invalid person number!" << endl;
+        return;
     }
 
     i--; // Decrease by 1, the user enters from 1, but indexing starts from 0
@@ -106,6 +108,17 @@ int main()
         if (!file.is_open()) // Checking if the fileName is Empty
         {
             cout << "Error opening file!" << endl;
+            cout << "Continue trying? Yes (y) / No (n): ";
+            char Y_N;
+            cin >> Y_N;
+            if (Y_N == 'n')
+            {
+                return 1;
+            }
+            else
+            {
+                main();
+            }
         }
 
         string line;
@@ -235,6 +248,6 @@ int main()
     cout << "    　|　|、＼" << endl;
     cout << "    　| 丿 ＼ ⌒)" << endl;
     cout << "    　| |　　) /" << endl;
-    cout << "     ノ )   Lﾉ" << endl;
+    cout << "     ノ )    Lﾉ" << endl;
     cout << "    (_／" << endl;
 }
