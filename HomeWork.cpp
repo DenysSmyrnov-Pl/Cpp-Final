@@ -52,7 +52,7 @@ void addPerson(vector<Person> &persons)
 // Function for changing the object
 void changePerson(vector<Person> &persons)
 {
-    size_t i = 0;
+    size_t i = 0; // size_t becouse compare with vector size
     cout << "Enter the number of the person you want to modify: ";
     cin >> i;
 
@@ -158,7 +158,6 @@ int main()
                 cin >> Y_N;
                 if (Y_N == 'n')
                 {
-                    // cout << "¸.·✩·.¸¸.·¯⍣✩ ⓐⓔⓢⓣⓗⓔⓣⓘⓒ ✩⍣¯·.¸¸.·✩·.¸" << endl;
                     break;
                 }
             }
