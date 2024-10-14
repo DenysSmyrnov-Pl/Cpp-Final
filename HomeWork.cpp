@@ -153,17 +153,36 @@ int main()
             if (choice == 'c')
             {
                 changePerson(persons);
-                break;
+                cout << "Continue changing list? Yes (y) / No (n): ";
+                char Y_N;
+                cin >> Y_N;
+                if (Y_N == 'n')
+                {
+                    // cout << "¸.·✩·.¸¸.·¯⍣✩ ⓐⓔⓢⓣⓗⓔⓣⓘⓒ ✩⍣¯·.¸¸.·✩·.¸" << endl;
+                    break;
+                }
             }
             else if (choice == 'a')
             {
                 addPerson(persons);
-                break;
+                cout << "Continue changing list? Yes (y) / No (n): ";
+                char Y_N;
+                cin >> Y_N;
+                if (Y_N == 'n')
+                {
+                    break;
+                }
             }
             else if (choice == 'r')
             {
                 removePerson(persons);
-                break;
+                cout << "Continue changing list? Yes (y) / No (n): ";
+                char Y_N;
+                cin >> Y_N;
+                if (Y_N == 'n')
+                {
+                    break;
+                }
             }
             else if (choice == 'n')
             {
@@ -204,4 +223,19 @@ int main()
     {
         cout << error.what() << endl;
     }
+    cout << "    ⊂ヽ" << endl;
+    cout << "   　 ＼＼   Λ＿Λ" << endl;
+    cout << "    　　 ＼( ˘ω˘ )" << endl;
+    cout << "    　　　 >　⌒ヽ" << endl;
+    cout << "    　　　/ 　 へ＼" << endl;
+    cout << "    　　 /　　/　＼＼" << endl;
+    cout << "    　　 ﾚ　ノ　　 ヽ_つ" << endl;
+    cout << "    　　/　/" << endl;
+    cout << "    　 /　/|" << endl;
+    cout << "    　(　(ヽ" << endl;
+    cout << "    　|　|、＼" << endl;
+    cout << "    　| 丿 ＼ ⌒)" << endl;
+    cout << "    　| |　　) /" << endl;
+    cout << "     ノ )   Lﾉ" << endl;
+    cout << "    (_／" << endl;
 }
