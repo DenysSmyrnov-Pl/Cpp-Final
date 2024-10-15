@@ -45,6 +45,7 @@ void addPerson(vector<Person> &persons)
 
     cout << "Enter new Score: ";
     cin >> score;
+
     persons.push_back(Person(firstName, secondName, score));
     // OR
     // persons.emplace_back(firstName, secondName, score);
@@ -53,6 +54,7 @@ void addPerson(vector<Person> &persons)
 // Function for changing the object
 void changePerson(vector<Person> &persons)
 {
+    // WARNING: that about this comment?
     size_t i = 0; // size_t becouse compare with vector size
     cout << "Enter the number of the person you want to modify: ";
     cin >> i;
@@ -85,12 +87,26 @@ void removePerson(vector<Person> &persons)
     if (i < 1 || i > persons.size()) // check if User wrote correct index line
     {
         cout << "Invalid person number!" << endl;
-        return;
+        // WARNING: that happen after error?
     }
 
     i--; // Decrease by 1, the user enters from 1, but indexing starts from 0
 
+    // WARNING: that is 'persons.begin()'?
+
     persons.erase(persons.begin() + i);
+}
+
+bool continueChanging()
+{
+    cout << "Continue changing list? Yes (y) / No (n): ";
+    char Y_N;
+    cin >> Y_N;
+    if (Y_N == 'n')
+    {
+        return false;
+    }
+    return true;
 }
 
 int main()
@@ -108,17 +124,6 @@ int main()
         if (!file.is_open()) // Checking if the fileName is Empty
         {
             cout << "Error opening file!" << endl;
-            cout << "Continue trying? Yes (y) / No (n): ";
-            char Y_N;
-            cin >> Y_N;
-            if (Y_N == 'n')
-            {
-                return 1;
-            }
-            else
-            {
-                main();
-            }
         }
 
         string line;
@@ -127,6 +132,13 @@ int main()
         while (getline(file, line))
         {
             lineIndex++;
+
+            if (line.empty())
+            {
+                cout << "Empty line! => " << lineIndex << endl;
+                continue;
+            }
+
             istringstream iss(line);
             string firstName;
             string secondName;
@@ -134,19 +146,11 @@ int main()
 
             if (!(iss >> firstName >> secondName >> score))
             {
-
-                if (line.empty())
-                {
-                    cout << "Empty line! => " << lineIndex << endl;
-                    continue;
-                }
-
                 cout << "Error: Incorrect data! => " << lineIndex << endl;
                 continue;
             }
+            // WARNING: what is this???
             persons.push_back(Person(firstName, secondName, score));
-            // OR
-            // persons.emplace_back(firstName, secondName, score);
         }
 
         file.close();
@@ -168,10 +172,7 @@ int main()
             if (choice == 'c')
             {
                 changePerson(persons);
-                cout << "Continue changing list? Yes (y) / No (n): ";
-                char Y_N;
-                cin >> Y_N;
-                if (Y_N == 'n')
+                if (continueChanging())
                 {
                     break;
                 }
@@ -179,10 +180,7 @@ int main()
             else if (choice == 'a')
             {
                 addPerson(persons);
-                cout << "Continue changing list? Yes (y) / No (n): ";
-                char Y_N;
-                cin >> Y_N;
-                if (Y_N == 'n')
+                if (continueChanging())
                 {
                     break;
                 }
@@ -190,10 +188,7 @@ int main()
             else if (choice == 'r')
             {
                 removePerson(persons);
-                cout << "Continue changing list? Yes (y) / No (n): ";
-                char Y_N;
-                cin >> Y_N;
-                if (Y_N == 'n')
+                if (continueChanging())
                 {
                     break;
                 }
@@ -224,10 +219,12 @@ int main()
         if (!outputFile.is_open())
         {
             cout << "Error opening output file!" << endl;
+            return 1;
         }
 
-        for (auto person : persons)
+        for (size_t i = 0; i < persons.size(); i++)
         {
+            Person person = persons[i];
             outputFile << person.FirstName << " " << person.SecondName << " " << person.Score << endl;
         }
 
@@ -250,6 +247,6 @@ int main()
     cout << "    　|　|、＼" << endl;
     cout << "    　| 丿 ＼ ⌒)" << endl;
     cout << "    　| |　　) /" << endl;
-    cout << "     ノ )    Lﾉ" << endl;
+    cout << "     ノ )   Lﾉ" << endl;
     cout << "    (_／" << endl;
 }
