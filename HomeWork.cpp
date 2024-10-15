@@ -135,7 +135,7 @@ int main()
             if (!(iss >> firstName >> secondName >> score))
             {
 
-                if (line == "")
+                if (line.empty())
                 {
                     cout << "Empty line! => " << lineIndex << endl;
                     continue;
@@ -144,7 +144,9 @@ int main()
                 cout << "Error: Incorrect data! => " << lineIndex << endl;
                 continue;
             }
-            persons.emplace_back(firstName, secondName, score);
+            persons.push_back(Person(firstName, secondName, score));
+            // OR
+            // persons.emplace_back(firstName, secondName, score);
         }
 
         file.close();
