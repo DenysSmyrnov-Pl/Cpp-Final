@@ -123,7 +123,6 @@ void addPerson(vector<Person> &persons)
 }
 bool continueChanging(vector<Person> &persons);
 // Function for changing the object
-// Function for changing the object
 void changePerson(vector<Person> &persons)
 {
     while (true)
@@ -152,20 +151,20 @@ void changePerson(vector<Person> &persons)
                 if (choice == 'f' || choice == 'F') // Change First Name
                 {
                     cout << "Enter new First Name: ";
-                    getline(cin >> ws, persons[i].FirstName); // Read the full name
+                    cin >> persons[i].FirstName;
                     break;
                 }
                 else if (choice == 's' || choice == 'S') // Change Second Name
                 {
                     cout << "Enter new Second Name: ";
-                    getline(cin >> ws, persons[i].SecondName); // Read the full name
+                    cin >> persons[i].SecondName;
                     break;
                 }
                 else if (choice == 'c' || choice == 'C') // Change Score
                 {
                     cout << "Enter new Score: ";
                     string scoreInput;
-                    getline(cin >> ws, scoreInput); // Read the full input
+                    cin >> scoreInput;
                     try
                     {
                         persons[i].Score = stoi(scoreInput); // Check for valid integer input
