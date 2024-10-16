@@ -1,4 +1,0 @@
-                if (continueChanging(persons))
-                {
-                    break;
-                }

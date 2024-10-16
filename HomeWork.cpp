@@ -117,11 +117,13 @@ bool continueChanging(vector<Person> &persons)
         else if (Y_N == 'y')
         {
             CoutAllPersons(persons); // Output of all created objects
+            break;
             return 0;
         }
         else
         {
             cout << "No command found, try again! " << endl;
+            return 1;
         }
     }
 }
@@ -143,7 +145,9 @@ int main()
             cout << "Error opening file!" << endl;
             main();
         }
+
         cout << "━─━─━━─━━━─━─━─━━─━─━━─━━━─━─━─━" << endl;
+
         string line;
         int lineIndex = 0;
 
@@ -193,6 +197,10 @@ int main()
                 {
                     break;
                 }
+                else
+                {
+                    break;
+                }
             }
             else if (choice == 'a')
             {
@@ -201,11 +209,19 @@ int main()
                 {
                     break;
                 }
+                else
+                {
+                    break;
+                }
             }
             else if (choice == 'r')
             {
                 removePerson(persons);
                 if (continueChanging(persons))
+                {
+                    break;
+                }
+                else
                 {
                     break;
                 }
@@ -253,11 +269,11 @@ int main()
         cout << error.what() << endl;
     }
 
-    cout << "set the program again? Yes (y) / No (n): ";
-    char Y_N;
-    cin >> Y_N;
     while (true)
     {
+        cout << "set the program again? Yes (y) / No (n): ";
+        char Y_N;
+        cin >> Y_N;
         if (Y_N == 'y')
         {
             main();
@@ -270,6 +286,7 @@ int main()
         else
         {
             cout << "No command found, try again! " << endl;
+            continue;
         }
     }
 }
