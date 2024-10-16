@@ -4,6 +4,7 @@
 #include <vector> // I chose vector instead of list due to its flexibility and if we can't predict the amount of Pearson in Input file
 
 using namespace std;
+
 // Сlass that include FirstName, SecondName, Score
 class Person
 {
@@ -52,57 +53,76 @@ void addPerson(vector<Person> &persons)
 // Function for changing the object
 void changePerson(vector<Person> &persons)
 {
-    unsigned long i = 0;
-    cout << "Enter the number of the person you want to modify: ";
-    cin >> i;
-
-    if (i < 1 || i > persons.size())
+    while (true)
     {
-        cout << "Invalid person number!" << endl;
-        return;
+        unsigned long i = 0;
+        cout << "Enter the number of the person you want to modify: ";
+        cin >> i;
+
+        if (i < 1 || i > persons.size())
+        {
+            cout << "Invalid person number!" << endl;
+            break;
+            return;
+        }
+
+        i--; // Decrease by 1, the user enters from 1, but vector start from 0
+
+        cout << "Enter new First Name: ";
+        cin >> persons[i].FirstName;
+
+        cout << "Enter new Second Name: ";
+        cin >> persons[i].SecondName;
+
+        cout << "Enter new Score: ";
+        cin >> persons[i].Score;
+        break;
     }
-
-    i--; // Decrease by 1, the user enters from 1, but vector start from 0
-
-    cout << "Enter new First Name: ";
-    cin >> persons[i].FirstName;
-
-    cout << "Enter new Second Name: ";
-    cin >> persons[i].SecondName;
-
-    cout << "Enter new Score: ";
-    cin >> persons[i].Score;
 }
 
 // Function to delete an object
 void removePerson(vector<Person> &persons)
 {
-    unsigned long i = 0;
-    cout << "Enter the number of the person you want to delete: ";
-    cin >> i;
-
-    if (i < 1 || i > persons.size()) // check if User wrote correct index line
+    while (true)
     {
-        cout << "Invalid person number!" << endl;
-    }
+        unsigned long i = 0;
+        cout << "Enter the number of the person you want to delete: ";
+        cin >> i;
 
-    i--; // Decrease by 1, the user enters from 1, but indexing starts from 0
-    persons.erase(persons.begin() + i);
+        if (i < 1 || i > persons.size()) // check if User wrote correct index line
+        {
+            cout << "Invalid person number!" << endl;
+            break;
+            return;
+        }
+
+        i--; // Decrease by 1, the user enters from 1, but indexing starts from 0
+        persons.erase(persons.begin() + i);
+        break;
+    }
 }
 
 bool continueChanging(vector<Person> &persons)
 {
-    cout << "Continue changing list? Yes (y) / No (n): ";
-    char Y_N;
-    cin >> Y_N;
-    if (Y_N == 'n')
+    while (true)
     {
-        return false;
-    }
-    else
-    {
-        CoutAllPersons(persons); // Output of all created objects
-        return 0;
+        cout << "Continue changing list? Yes (y) / No (n): ";
+        char Y_N;
+        cin >> Y_N;
+        if (Y_N == 'n')
+        {
+            return false;
+            break;
+        }
+        else if (Y_N == 'y')
+        {
+            CoutAllPersons(persons); // Output of all created objects
+            return 0;
+        }
+        else
+        {
+            cout << "No command found, try again! " << endl;
+        }
     }
 }
 
@@ -133,7 +153,7 @@ int main()
 
             if (line.empty())
             {
-                cout << "Empty line! => " << lineIndex << endl;
+                cout << lineIndex << ") <= Empty line!" << endl;
                 continue;
             }
 
@@ -144,10 +164,11 @@ int main()
 
             if (!(iss >> firstName >> secondName >> score))
             {
-                cout << "Error: Incorrect data! => " << lineIndex << endl;
+                cout << lineIndex << ") <= Error: Incorrect data!" << endl;
                 continue;
             }
             persons.push_back(Person(firstName, secondName, score));
+            cout << lineIndex << ") <= Correct line!" << endl;
         }
 
         file.close();
@@ -165,7 +186,6 @@ int main()
             char choice;
             cout << "Do you want to change (c), add (a) or remove (r) a person? (Enter (n) if no): ";
             cin >> choice;
-
             if (choice == 'c')
             {
                 changePerson(persons);
@@ -196,7 +216,9 @@ int main()
             }
             else
             {
+
                 cout << "No command found, try again! " << endl;
+                main();
             }
         }
         catch (exception error)
@@ -234,16 +256,20 @@ int main()
     cout << "set the program again? Yes (y) / No (n): ";
     char Y_N;
     cin >> Y_N;
-    if (Y_N == 'y')
+    while (true)
     {
-        main();
-    }
-    else if (Y_N == 'n')
-    {
-        return 1;
-    }
-    else
-    {
-        cout << "No command found, try again! " << endl;
+        if (Y_N == 'y')
+        {
+            main();
+        }
+        else if (Y_N == 'n')
+        {
+            break;
+            return 0;
+        }
+        else
+        {
+            cout << "No command found, try again! " << endl;
+        }
     }
 }
