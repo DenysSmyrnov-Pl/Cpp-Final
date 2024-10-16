@@ -80,7 +80,7 @@ void addPerson(vector<Person> &persons)
         }
         else
         {
-            cout << "Error: First Name must contain only letters. Please try again." << endl;
+            cout << "Error: FirstName can have only letters!" << endl;
         }
     }
 
@@ -96,7 +96,7 @@ void addPerson(vector<Person> &persons)
         }
         else
         {
-            cout << "Error: Second Name must contain only letters. Please try again." << endl;
+            cout << "Error: SecondName can have only letters!" << endl;
         }
     }
 
@@ -113,7 +113,7 @@ void addPerson(vector<Person> &persons)
         }
         catch (...)
         {
-            cout << "Error: Score must be a valid number. Please try again." << endl;
+            cout << "Error: Score must be number!" << endl;
         }
     }
 
@@ -207,7 +207,7 @@ void removePerson(vector<Person> &persons)
             i = stoi(input);
             if (i < 1 || i > persons.size()) // check if User wrote correct index line
             {
-                cout << "Invalid person number!" << endl;
+                cout << "Wrong person number!" << endl;
                 break;
                 return;
             }
@@ -217,7 +217,7 @@ void removePerson(vector<Person> &persons)
 
             i--; // Decrease by 1, the user enters from 1, but indexing starts from 0
             persons.erase(persons.begin() + i);
-            cout << "Successfully" << endl;
+            cout << "Successfully deleted" << endl;
             break;
             break;
         }
