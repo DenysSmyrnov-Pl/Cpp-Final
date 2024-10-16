@@ -62,57 +62,133 @@ char getChar()
 void addPerson(vector<Person> &persons)
 {
     string firstName, secondName;
-    string score;
+    int score = 0;
+    bool isFirstNameValid = false;
+    bool isSecondNameValid = false;
+    bool isScoreValid = false;
 
-    cout << "Enter new First Name: ";
-    getline(cin, firstName);
-
-    cout << "Enter new Second Name: ";
-    getline(cin, secondName);
-
-    cout << "Enter new Score: ";
-    getline(cin, score);
-    try
+    // Loop until we get valid inputs for each field
+    while (!isFirstNameValid)
     {
-        int Newscore = stoi(score);
-        persons.push_back(Person(firstName, secondName, Newscore));
+        cout << "Enter new First Name: ";
+        getline(cin, firstName);
+
+        // Check if the first name contains only letters
+        if (!firstName.empty() && all_of(firstName.begin(), firstName.end(), ::isalpha))
+        {
+            isFirstNameValid = true;
+        }
+        else
+        {
+            cout << "Error: First Name must contain only letters. Please try again." << endl;
+        }
     }
-    catch (...)
+
+    while (!isSecondNameValid)
     {
-        cout << "Error: wrong data" << endl;
-        addPerson(persons);
+        cout << "Enter new Second Name: ";
+        getline(cin, secondName);
+
+        // Check if the second name contains only letters
+        if (!secondName.empty() && all_of(secondName.begin(), secondName.end(), ::isalpha))
+        {
+            isSecondNameValid = true;
+        }
+        else
+        {
+            cout << "Error: Second Name must contain only letters. Please try again." << endl;
+        }
     }
+
+    while (!isScoreValid)
+    {
+        cout << "Enter new Score: ";
+        string scoreInput;
+        getline(cin, scoreInput);
+
+        try
+        {
+            score = stoi(scoreInput); // Convert input string to integer
+            isScoreValid = true;
+        }
+        catch (...)
+        {
+            cout << "Error: Score must be a valid number. Please try again." << endl;
+        }
+    }
+
+    // Once all inputs are valid, add the new person to the list
+    persons.push_back(Person(firstName, secondName, score));
+    cout << "Person added successfully!" << endl;
 }
 bool continueChanging(vector<Person> &persons);
 // Function for changing the object
 void changePerson(vector<Person> &persons)
 {
-
     while (true)
     {
         unsigned long i = 0;
         cout << "Enter the number of the person you want to modify: ";
-        cin >> i;
+        string input;
+        getline(cin, input);
 
-        if (i < 1 || i > persons.size())
+        try
         {
-            cout << "Invalid person number!" << endl;
+            i = stoi(input);
+            if (i < 1 || i > persons.size())
+            {
+                cout << "Invalid person number!" << endl;
+                continue; // Ask again if number is invalid
+            }
+            i--; // Decrease by 1, user enters from 1, but vector starts from 0
 
+            while (true)
+            {
+                // Asking user what exactly they want to change
+                cout << "What do you want to change? (First Name (f), Second Name (s), Score (c)): ";
+                char choice = getChar(); // Use getChar to handle single-character input
+
+                if (choice == 'f' || choice == 'F') // Change First Name
+                {
+                    cout << "Enter new First Name: ";
+                    cin >> persons[i].FirstName;
+                    break;
+                }
+                else if (choice == 's' || choice == 'S') // Change Second Name
+                {
+                    cout << "Enter new Second Name: ";
+                    cin >> persons[i].SecondName;
+                    break;
+                }
+                else if (choice == 'c' || choice == 'C') // Change Score
+                {
+                    cout << "Enter new Score: ";
+                    string scoreInput;
+                    cin >> scoreInput;
+                    try
+                    {
+                        persons[i].Score = stoi(scoreInput); // Check for valid integer input
+                    }
+                    catch (...)
+                    {
+                        cout << "Invalid score. Please enter a valid number." << endl;
+                        continue; // Ask again if input is invalid
+                    }
+                    break;
+                }
+                else
+                {
+                    cout << "Invalid choice, please enter 'f', 's', or 'c'." << endl;
+                }
+            }
+            cout << "Person updated successfully!" << endl;
             break;
-            return;
         }
-
-        i--; // Decrease by 1, the user enters from 1, but vector start from 0
-
-        cout << "Enter new First Name: ";
-        cin >> persons[i].FirstName;
-
-        cout << "Enter new Second Name: ";
-        cin >> persons[i].SecondName;
-
-        cout << "Enter new Score: ";
-        cin >> persons[i].Score;
-        break;
+        catch (...)
+        {
+            cout << "Error: wrong data" << endl;
+            continue; // Ask again if input is invalid
+        }
     }
 }
 
@@ -123,9 +199,7 @@ void removePerson(vector<Person> &persons)
     {
         unsigned long i = 0;
         cout << "Enter the number of the person you want to delete: ";
-        // cin >> i;
         string input;
-
         getline(cin, input);
 
         try
@@ -143,14 +217,14 @@ void removePerson(vector<Person> &persons)
 
             i--; // Decrease by 1, the user enters from 1, but indexing starts from 0
             persons.erase(persons.begin() + i);
-            cout << "Sucsecfully" << endl;
+            cout << "Successfully" << endl;
             break;
             break;
         }
         catch (...)
         {
             cout << "Error: wrong data" << endl;
-            removePerson(persons);
+            // removePerson(persons);
         }
     }
 }
