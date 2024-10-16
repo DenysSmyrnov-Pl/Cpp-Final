@@ -2,6 +2,7 @@
 #include <iostream>
 #include <sstream>
 #include <vector> // I chose vector instead of list due to its flexibility and if we can't predict the amount of Pearson in Input file
+#include <cctype>
 
 using namespace std;
 
@@ -21,6 +22,7 @@ public:
 // Function to output all objects
 void CoutAllPersons(vector<Person> persons)
 {
+    cout << "━─━─━━─━━━─━─━─━━─━─━━─━━━─━─━─━" << endl;
     unsigned long i = 0;
     cout << "List of people:" << endl;
     for (i = 0; i < persons.size(); i++)
@@ -30,29 +32,62 @@ void CoutAllPersons(vector<Person> persons)
         cout << persons[i].SecondName << " ";
         cout << persons[i].Score << endl;
     }
+    cout << "━─━─━━─━━━─━─━─━━─━─━━─━━━─━─━─━" << endl;
+}
+
+char getChar()
+{
+    string input;
+
+    while (true)
+    {
+        getline(cin, input); // Capture the entire input, including spaces))
+
+        // Check if input is exactly one character and it is a letter
+        if (input.length() == 1 && isalpha(input[0]))
+        {
+            return input[0]; // Return the valid letter
+        }
+        else
+        {
+            cout << "Plese enter one letter!" << endl;
+            //  cout << "Do you want to change (c), add (a) or remove (r) a person? (Enter (n) if no): "; // Print error message
+            // Clear input buffer to prevent any further issues
+            cin.clear();
+        }
+    }
 }
 
 // Function to add a new object
 void addPerson(vector<Person> &persons)
 {
     string firstName, secondName;
-    int score;
+    string score;
 
     cout << "Enter new First Name: ";
-    cin >> firstName;
+    getline(cin, firstName);
 
     cout << "Enter new Second Name: ";
-    cin >> secondName;
+    getline(cin, secondName);
 
     cout << "Enter new Score: ";
-    cin >> score;
-
-    persons.push_back(Person(firstName, secondName, score));
+    getline(cin, score);
+    try
+    {
+        int Newscore = stoi(score);
+        persons.push_back(Person(firstName, secondName, Newscore));
+    }
+    catch (...)
+    {
+        cout << "Error: wrong data" << endl;
+        addPerson(persons);
+    }
 }
-
+bool continueChanging(vector<Person> &persons);
 // Function for changing the object
 void changePerson(vector<Person> &persons)
 {
+
     while (true)
     {
         unsigned long i = 0;
@@ -62,6 +97,7 @@ void changePerson(vector<Person> &persons)
         if (i < 1 || i > persons.size())
         {
             cout << "Invalid person number!" << endl;
+
             break;
             return;
         }
@@ -87,66 +123,88 @@ void removePerson(vector<Person> &persons)
     {
         unsigned long i = 0;
         cout << "Enter the number of the person you want to delete: ";
-        cin >> i;
+        // cin >> i;
+        string input;
 
-        if (i < 1 || i > persons.size()) // check if User wrote correct index line
+        getline(cin, input);
+
+        try
         {
-            cout << "Invalid person number!" << endl;
-            break;
-            return;
-        }
+            i = stoi(input);
+            if (i < 1 || i > persons.size()) // check if User wrote correct index line
+            {
+                cout << "Invalid person number!" << endl;
+                break;
+                return;
+            }
+            else
+            {
+            }
 
-        i--; // Decrease by 1, the user enters from 1, but indexing starts from 0
-        persons.erase(persons.begin() + i);
-        break;
+            i--; // Decrease by 1, the user enters from 1, but indexing starts from 0
+            persons.erase(persons.begin() + i);
+            cout << "Sucsecfully" << endl;
+            break;
+            break;
+        }
+        catch (...)
+        {
+            cout << "Error: wrong data" << endl;
+            removePerson(persons);
+        }
     }
 }
 
+// Function to check if the user wants to continue changing
 bool continueChanging(vector<Person> &persons)
 {
+    char Y_N;
     while (true)
     {
         cout << "Continue changing list? Yes (y) / No (n): ";
-        char Y_N;
         cin >> Y_N;
-        if (Y_N == 'n')
+
+        if (Y_N == 'y' || Y_N == 'Y') // If the user wants to continue
         {
-            return false;
-            break;
+            CoutAllPersons(persons); // Output the list of persons before continuing
+            return true;             // Return true to continue editing
         }
-        else if (Y_N == 'y')
+        else if (Y_N == 'n' || Y_N == 'N') // If the user wants to stop
         {
-            CoutAllPersons(persons); // Output of all created objects
-            break;
-            return 0;
+            return false; // Return false to stop the loop
         }
         else
         {
-            cout << "No command found, try again! " << endl;
-            return 1;
+            cout << "Invalid input. Please enter 'y' or 'n'." << endl; // Invalid input handling
         }
     }
 }
 
+// Main function
 int main()
 {
     vector<Person> persons;
     string filename;
 
+    // Reading from file
     try // trying to read file
     {
-        cout << "Enter the file name: ";
-        cin >> filename;
+        cout << "Enter the file name: " << filename;
+        getline(cin, filename);
 
         ifstream file(filename);
 
         if (!file.is_open()) // Checking if the fileName is Empty
         {
-            cout << "Error opening file!" << endl;
+            cout << "Error opening file! => " << filename << endl;
             main();
         }
+        else
+        {
+            cout << "file opened successfully! => " << filename << endl;
+        }
 
-        cout << "━─━─━━─━━━─━─━─━━─━─━━─━━━─━─━─━" << endl;
+        cout << "\n━─━─━━─━━━─━─━─━━─━─━━─━━━─━─━─━" << endl;
 
         string line;
         int lineIndex = 0;
@@ -174,7 +232,6 @@ int main()
             persons.push_back(Person(firstName, secondName, score));
             cout << lineIndex << ") <= Correct line!" << endl;
         }
-
         file.close();
     }
     catch (exception error)
@@ -182,59 +239,43 @@ int main()
         cout << error.what() << endl;
     }
 
-    CoutAllPersons(persons); // Output of all created objects
+    CoutAllPersons(persons); // Output all objects
+
+    // Main loop for modification
     while (true)
     {
-        try // Changing, adding, deleting objects at the user request
+        try
         {
-            char choice;
             cout << "Do you want to change (c), add (a) or remove (r) a person? (Enter (n) if no): ";
-            cin >> choice;
+
+            char choice = getChar(); // Get user input for action
+
             if (choice == 'c')
             {
-                changePerson(persons);
-                if (continueChanging(persons))
-                {
-                    break;
-                }
-                else
-                {
-                    break;
-                }
+                changePerson(persons); // Modify an existing person
             }
-            else if (choice == 'a')
+            else if (choice == 'a' || choice == 'A')
             {
-                addPerson(persons);
-                if (continueChanging(persons))
-                {
-                    break;
-                }
-                else
-                {
-                    break;
-                }
+                addPerson(persons); // Add a new person
             }
-            else if (choice == 'r')
+            else if (choice == 'r' || choice == 'R')
             {
-                removePerson(persons);
-                if (continueChanging(persons))
-                {
-                    break;
-                }
-                else
-                {
-                    break;
-                }
+                removePerson(persons); // Remove a person
             }
-            else if (choice == 'n')
+            else if (choice == 'n' || choice == 'N')
             {
-                break;
+                break; // Exit the loop if user chooses 'n'
             }
             else
             {
+                cout << "No command found, try again!" << endl;
+                continue;
+            }
 
-                cout << "No command found, try again! " << endl;
-                main();
+            // Ask if the user wants to continue modifying the list
+            if (!continueChanging(persons)) // If the user says 'n', exit the loop
+            {
+                break;
             }
         }
         catch (exception error)
@@ -243,42 +284,42 @@ int main()
         }
     }
 
-    CoutAllPersons(persons); // Output the new list
+    CoutAllPersons(persons); // Output the final list after modifications
+
+    // Output to file
     try
     {
         cout << "Enter the output file name: ";
-        cin >> filename;
+        getline(cin, filename);
 
         ofstream outputFile(filename);
         if (!outputFile.is_open())
         {
-            cout << "Error opening output file!" << endl;
+            cout << "Error opening output file! => " << filename << endl;
             return 1;
         }
 
-        for (unsigned long i = 0; i < persons.size(); i++)
+        for (unsigned long i = 0; i < persons.size(); i++) // Write all persons to file
         {
             Person person = persons[i];
             outputFile << person.FirstName << " " << person.SecondName << " " << person.Score << endl;
         }
-
         outputFile.close();
     }
-    catch (exception error)
+    catch (exception &error)
     {
         cout << error.what() << endl;
     }
-
     while (true)
     {
         cout << "set the program again? Yes (y) / No (n): ";
         char Y_N;
         cin >> Y_N;
-        if (Y_N == 'y')
+        if (Y_N == 'y' || Y_N == 'Y')
         {
             main();
         }
-        else if (Y_N == 'n')
+        else if (Y_N == 'n' || Y_N == 'N')
         {
             break;
             return 0;
